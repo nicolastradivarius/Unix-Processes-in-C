@@ -7,7 +7,7 @@
 
 int main(int argc, char const *argv[]) {
     //tenemos un array con multiples números, y queremos sumar todos los elementos de una forma diferente, tomando ventaja de tener diferentes procesos: dividimos el array en dos, dejando que una parte sea manipulada por un proceso, y la otra por el otro. Al final, ambos procesos tendrán una suma parcial, y un proceso escribirá en el pipe y el otro la leerá y la sumará.
-    int arr[] = {1, 2, 3, 4, 1, 2};
+    int arr[] = {3, 9, 3, 4, 1, 2};
     int arrSize = sizeof(arr) / sizeof(int); //esto nos da el número de elementos del array.
     int start, end;
     int fd[2];
@@ -41,12 +41,16 @@ int main(int argc, char const *argv[]) {
     //Ahora vemos el tema del pipe y pasarle la suma parcial al padre.
     if (id == 0) {
         close(fd[0]); //lo cerramos porque no estamos leyendo nada
-        write(fd[1], &sum, sizeof(sum));
+        if (write(fd[1], &sum, sizeof(sum)) == -1) {
+            return -1;
+        }
         close(fd[1]);
     } else {
         int sumFromChild;
         close(fd[1]); //lo cerramos porque no estamos escribiendo nada
-        read(fd[0], &sumFromChild, sizeof(sumFromChild)); //qué pasaría si el proceso padre es planificado antes que el hijo y llega a este punto antes de que el proceso hijo escriba en el pipe? El pipe estaría vacío, así que en cierta forma habría que esperar a que haya algo en el pipe para poder tomarlo. La función read() bloquea el proceso padre y esperará a que haya algo en el pipe para ser leído; la llamada a read() no retornará hasta que el proceso hijo llame a write().
+        if (read(fd[0], &sumFromChild, sizeof(sumFromChild)) == -1) {
+            return -1;
+        } //qué pasaría si el proceso padre es planificado antes que el hijo y llega a este punto antes de que el proceso hijo escriba en el pipe? El pipe estaría vacío, así que en cierta forma habría que esperar a que haya algo en el pipe para poder tomarlo. La función read() bloquea el proceso padre y esperará a que haya algo en el pipe para ser leído; la llamada a read() no retornará hasta que el proceso hijo llame a write().
         close(fd[0]);
 
         int totalSum = sum + sumFromChild;
