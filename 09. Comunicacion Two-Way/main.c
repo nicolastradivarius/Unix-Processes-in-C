@@ -42,7 +42,7 @@ int main(int argc, char const *argv[]) {
         wait(NULL); //hago un wait para proseguir una vez que el proceso hijo haya efectivamente terminado.
     }
     
-    //El problema que teníamos era que usábamos un solo pipe, y cuando el proceso padre escribía información en él, inmediatamente la tomaba y la procesaba, lo cual dejaba al proceso hijo sin sentido. Ahora usamos dos pipes, cerramos los puntos que no nos interesan y solo usamos cada pipe con el propósito de lograr que el proceso padre escriba en el pipe que va a ser usado para enviar la información al hijo, y se quede esperando por información en el otro pipe, que es por donde el hijo le va a mandar la información. De esta forma, el pipe no es utilizado para lectura y escritura al mismo tiempo.
+    //El problema que teníamos era que usábamos un solo pipe, y cuando el proceso padre escribía información en él, inmediatamente la tomaba y la procesaba, lo cual dejaba al proceso hijo sin sentido. Ahora usamos dos pipes, cerramos los puntos que no nos interesan y solo usamos cada pipe con el propósito de lograr que el proceso padre escriba en el pipe que va a ser usado para enviar la información al hijo, y se quede esperando por información en el otro pipe, que es por donde el hijo le va a mandar la información. De esta forma, el pipe no es utilizado para lectura y escritura al mismo tiempo..
 
     return 0;
 }
