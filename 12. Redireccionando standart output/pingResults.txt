@@ -1,0 +1,9 @@
+El fd duplicado: 1
+PING google.com (172.217.172.78) 56(84) bytes of data.
+64 bytes from eze06s01-in-f14.1e100.net (172.217.172.78): icmp_seq=1 ttl=116 time=413 ms
+64 bytes from eze06s01-in-f14.1e100.net (172.217.172.78): icmp_seq=2 ttl=116 time=219 ms
+64 bytes from eze06s01-in-f14.1e100.net (172.217.172.78): icmp_seq=3 ttl=116 time=147 ms
+
+--- google.com ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2001ms
+rtt min/avg/max/mdev = 147.506/260.189/413.168/112.137 ms
