@@ -25,7 +25,10 @@ int main(int argc, char const *argv[]) {
         int file2 = dup2(file, STDOUT_FILENO); //toma 2 parámetros: el primero es el file descriptor que queremos clonar, y el segundo es el valor que queremos que el nuevo file descriptor tenga. Ahora tenemos el file descriptor de 3, y el de valor 1 que reemplazó a standard output por pingResults.txt.  Ahora cuando el programa ping quiera imprimir algo por pantalla (como los resultados del ping), éstos irán al archivo .txt en lugar de mostrarse por pantalla.
         close(file); //cerramos el file descriptor original porque no lo necesitamos.
 
-        int status = execlp("ping", "ping", "-c", "3", "google.com", NULL);
+        int status = execlp("ping", "ping", "-c", "3", "google.com", NULL); //Tener en cuenta que exec se comunica directamente con el ejecutable que le indicamos, o sea "ping", no va a la bash y luego ejecuta el programa. Por eso es que no podemos especificar los argumentos y demás como si estuviéramos en una bash porque no es así. Si en cambio hacemos algo como...
+        //execlp("bash", "bash", "-c", "ping -c 3 google.com | grep rtt", NULL);
+        //ahí estaríamos simulando una shell y por lo tanto podemos hacer lo anterior.
+        
         //execlp("mkfifo", "mkfifo", "sum", NULL);
         //cualquier cosa que pongamos después del execlp no importará porque será reemplazado. Eso hace que perdamos el control de la programación de nuestro proceso hijo.
         //Cómo chequeamos si el programa que llamamos tuvo un error o no existe? execlp sólo reemplazará la memoria del proceso sólo si tiene éxito, si hay un error esto no ocurrirá y simplemente seguirá con la ejecución de nuestro programa.
